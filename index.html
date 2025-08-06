@@ -6981,47 +6981,52 @@
     const videoContainer202 = document.getElementById("videoContainer202");
     const video202 = document.getElementById("video202");
     const magnifier202 = document.getElementById("magnifier202");
-    const zoomedVideov202 = document.getElementById("zoomedVideo202");
+    const zoomedVideo202 = document.getElementById("zoomedVideo202");
 
     // Sync zoomed video with main video
     video202.addEventListener("play", () => zoomedVideo202.play());
     video202.addEventListener("pause", () => zoomedVideo202.pause());
-    video202.addEventListener("timeupdate", () => {
-      zoomedVideo202.currentTime = video202.currentTime;
-    });
+    // video202.addEventListener("timeupdate", () => {
+    //   zoomedVideo202.currentTime = video202.currentTime;
+    // });
 
-    videoContainer202.addEventListener("mousemove", (e) => {
-      // const { left, top, width, height } =
-      //   videoContainer202.getBoundingClientRect();
-      // const x = e.clientX - left;
-      // const y = e.clientY - top;
+function syncVideos() {
+  if (!video202.paused && !video202.ended) {
+    zoomedVideo202.currentTime = video202.currentTime;
+    requestAnimationFrame(syncVideos);
+  }
+}
 
-      // magnifier202.style.left = `${x}px`;
-      // magnifier202.style.top = `${y}px`;
-      // magnifier202.style.display = "block";
-
-      // const scale = 2; // Zoom factor
-      // zoomedVideo202.style.width = `${width * scale}px`;
-      // zoomedVideo202.style.height = `${height * scale}px`;
-      // zoomedVideo202.style.left = `-${x * scale - magnifier202.offsetWidth / 2
-      //   }px`;
-      // zoomedVideo202.style.top = `-${y * scale - magnifier202.offsetHeight / 2
-      //   }px`;
-      videoContainer202.addEventListener("mousemove", (e) => {
-  const x = e.offsetX;
-  const y = e.offsetY;
-
-  magnifier202.style.left = `${x}px`;
-  magnifier202.style.top = `${y}px`;
-  magnifier202.style.display = "block";
-
-  const scale = 2; // Zoom factor
-  zoomedVideo202.style.width = `${videoContainer202.offsetWidth * scale}px`;
-  zoomedVideo202.style.height = `${videoContainer202.offsetHeight * scale}px`;
-  zoomedVideo202.style.left = `-${x * scale - magnifier202.offsetWidth / 2}px`;
-  zoomedVideo202.style.top = `-${y * scale - magnifier202.offsetHeight / 2}px`;
+video202.addEventListener("play", () => {
+  zoomedVideo202.play();
+  requestAnimationFrame(syncVideos);
 });
 
+video202.addEventListener("pause", () => {
+  zoomedVideo202.pause();
+});
+
+
+
+
+
+    videoContainer202.addEventListener("mousemove", (e) => {
+      const { left, top, width, height } =
+        videoContainer202.getBoundingClientRect();
+      const x = e.clientX - left;
+      const y = e.clientY - top;
+
+      magnifier202.style.left = `${x}px`;
+      magnifier202.style.top = `${y}px`;
+      magnifier202.style.display = "block";
+
+      const scale = 2; // Zoom factor
+      zoomedVideo202.style.width = `${width * scale}px`;
+      zoomedVideo202.style.height = `${height * scale}px`;
+      zoomedVideo202.style.left = `-${x * scale - magnifier202.offsetWidth / 2
+        }px`;
+      zoomedVideo202.style.top = `-${y * scale - magnifier202.offsetHeight / 2
+        }px`;
     });
 
     videoContainer202.addEventListener("mouseleave", () => {
